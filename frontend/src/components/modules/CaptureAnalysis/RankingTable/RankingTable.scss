@@ -1,0 +1,78 @@
+.ranking-table {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--theme-border-primary);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0 15px var(--theme-primary-alpha-medium);
+  
+  th,
+  td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--theme-border-secondary);
+    color: var(--theme-text-primary);
+  }
+  
+  th {
+    background: var(--theme-bg-secondary);
+    font-weight: 600;
+    color: var(--theme-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+  }
+}
+
+.rank {
+  font-weight: bold;
+  color: var(--theme-primary);
+  text-shadow: 0 0 5px var(--theme-primary-alpha-medium);
+}
+
+.location-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-bar {
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  
+  &.cost { background: #f59e0b; }
+  &.risk { background: #ef4444; }
+  &.value { background: #10b981; }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #00ff00;
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  
+  &:hover {
+    background: rgba(0, 255, 0, 0.1);
+    color: #00ff00;
+    border-color: #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  }
+}
+
+/* BaseCard override for stats */
+:deep(.base-card) {
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px var(--theme-primary-alpha-medium);
+}

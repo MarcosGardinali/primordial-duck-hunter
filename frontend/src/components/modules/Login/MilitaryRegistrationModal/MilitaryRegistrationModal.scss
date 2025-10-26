@@ -1,0 +1,322 @@
+.military-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.military-modal {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 3px solid #4a5c3a;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 700px;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255, 0, 0, 0.02) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 48%, rgba(74, 92, 58, 0.05) 49%, rgba(74, 92, 58, 0.05) 51%, transparent 52%);
+    pointer-events: none;
+    border-radius: 12px;
+  }
+  
+  &::after {
+    content: '⚡';
+    position: absolute;
+    top: 15%;
+    right: 8%;
+    font-size: 20px;
+    color: rgba(255, 255, 0, 0.1);
+    pointer-events: none;
+    animation: flicker 3s infinite;
+  }
+  
+  @keyframes flicker {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.3; }
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #2d2d2d;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4a5c3a;
+    border-radius: 4px;
+  }
+}
+
+.modal-header {
+  background: linear-gradient(90deg, #4a5c3a 0%, #6b7c5b 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #4a5c3a;
+  position: relative;
+  z-index: 2;
+
+  .header-badge {
+    display: flex;
+    flex-direction: column;
+    
+    .badge-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+    }
+    
+    .badge-code {
+      font-size: 14px;
+      color: #cccccc;
+      font-family: 'Courier New', monospace;
+      margin-top: 4px;
+    }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 32px;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.modal-body {
+  padding: 20px 25px;
+}
+
+.classification-banner {
+  background: linear-gradient(90deg, #8b0000 0%, #dc143c 100%);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+}
+
+.military-form {
+  .form-section {
+    margin-bottom: 20px;
+    position: relative;
+
+    h3 {
+      color: #4a5c3a;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #4a5c3a;
+      padding-bottom: 8px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .military-input {
+    background: #2d2d2d;
+    border: 2px solid #4a5c3a;
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    height: 48px;
+    line-height: 1.2;
+
+    &:focus {
+      border-color: #6b7c5b;
+      box-shadow: 0 0 10px rgba(74, 92, 58, 0.3);
+      outline: none;
+    }
+
+    &::placeholder {
+      color: #888888;
+    }
+  }
+
+  .military-select {
+    width: 100%;
+    background: #2d2d2d;
+    border: 2px solid #4a5c3a;
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 48px;
+    line-height: 1.2;
+
+    &:focus {
+      border-color: #6b7c5b;
+      box-shadow: 0 0 10px rgba(74, 92, 58, 0.3);
+      outline: none;
+    }
+
+    option {
+      background: #2d2d2d;
+      color: #ffffff;
+    }
+  }
+}
+
+.error-message {
+  background: linear-gradient(90deg, #8b0000 0%, #dc143c 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  animation: shake 0.5s ease-in-out;
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  .btn-cancel {
+    background: linear-gradient(135deg, #666666 0%, #888888 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &:hover {
+      background: linear-gradient(135deg, #777777 0%, #999999 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #4a5c3a 0%, #6b7c5b 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 200px;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5a6c4a 0%, #7b8c6b 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// Animações de entrada
+.military-modal {
+  animation: modalSlideIn 0.4s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

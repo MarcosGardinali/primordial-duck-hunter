@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  email            String   @unique @db.VarChar(255)
+  password         String   @db.VarChar(255)
+  bloodType        String?  @map("blood_type") @db.VarChar(10)
+  height           Decimal? @db.Decimal(5, 2)
+  weight           Decimal? @db.Decimal(5, 2)
+  rank             String?  @db.VarChar(100)
+  specialization   String?  @db.VarChar(255)
+  emailVerified    Boolean  @default(false) @map("email_verified")
+  verificationCode String?  @map("verification_code") @db.VarChar(10)
+  codeExpiresAt    DateTime? @map("code_expires_at")
+
+  toursCompleted   String?  @map("tours_completed") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  userTours UserTour[]
+
+  @@map("users")
+}
+
+model Drone {
+  id            Int      @id @default(autoincrement())
+  serialNumber  String   @unique @map("serial_number") @db.VarChar(100)
+  brand         String   @db.VarChar(100)
+  manufacturer  String   @db.VarChar(100)
+  countryOrigin String   @map("country_origin") @db.VarChar(100)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  primordialDucks PrimordialDuck[]
+
+  @@map("drones")
+}
+
+model Superpower {
+  id             Int      @id @default(autoincrement())
+  name           String   @db.VarChar(255)
+  description    String   @db.Text
+  classification String   @db.VarChar(500)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  primordialDucks PrimordialDuck[]
+
+  @@map("superpowers")
+}
+
+model PrimordialDuck {
+  id                 Int                @id @default(autoincrement())
+  nickname           String?            @db.VarChar(255)
+  photoUrl           String?            @map("photo_url") @db.VarChar(255)
+  droneId            Int                @map("drone_id")
+  height             Decimal            @db.Decimal(10, 2)
+  weight             Decimal            @db.Decimal(10, 2)
+  heightUnit         String             @default("cm") @map("height_unit") @db.VarChar(10)
+  weightUnit         String             @default("g") @map("weight_unit") @db.VarChar(10)
+  city               String             @db.VarChar(255)
+  country            String             @db.VarChar(255)
+  countryCode        String?            @map("country_code") @db.VarChar(10)
+  latitude           Decimal            @db.Decimal(10, 8)
+  longitude          Decimal            @db.Decimal(11, 8)
+  gpsPrecision       Decimal            @map("gps_precision") @db.Decimal(10, 2)
+  precisionUnit      String             @default("cm") @map("precision_unit") @db.VarChar(10)
+  referencePoint     String?            @map("reference_point") @db.VarChar(255)
+  hibernationStatus  HibernationStatus  @map("hibernation_status")
+  heartRateBpm       Int?               @map("heart_rate_bpm")
+  mutationsCount     Int                @default(0) @map("mutations_count")
+  superpowerId       Int?               @map("superpower_id")
+  captured           Boolean            @default(false)
+  captureStrategy    String?            @map("capture_strategy") @db.VarChar(255)
+  captureDate        DateTime?          @map("capture_date")
+  discoveredAt       DateTime           @default(now()) @map("discovered_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+
+  drone      Drone       @relation(fields: [droneId], references: [id], onDelete: Cascade)
+  superpower Superpower? @relation(fields: [superpowerId], references: [id], onDelete: SetNull)
+
+  @@map("primordial_ducks")
+}
+
+model DroneStatus {
+  id        Int      @id @default(autoincrement())
+  battery   Int      @default(100)
+  fuel      Int      @default(100)
+  integrity Int      @default(100)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("drone_status")
+}
+
+model UserTour {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  screenName String   @map("screen_name") @db.VarChar(50)
+  completedAt DateTime @default(now()) @map("completed_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, screenName])
+  @@map("user_tours")
+}
+
+enum HibernationStatus {
+  desperto
+  em_transe
+  hibernacao_profunda
+
+  @@map("hibernation_status")
+}

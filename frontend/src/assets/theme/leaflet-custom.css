@@ -1,0 +1,242 @@
+/* Estilos customizados para Leaflet */
+
+/* Fix para ícones do Leaflet */
+.leaflet-default-icon-path {
+  background-image: url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png');
+}
+
+/* Estilos para clusters */
+.marker-cluster-small {
+  background-color: rgba(181, 226, 140, 0.6);
+}
+
+.marker-cluster-small div {
+  background-color: rgba(110, 204, 57, 0.6);
+}
+
+.marker-cluster-medium {
+  background-color: rgba(241, 211, 87, 0.6);
+}
+
+.marker-cluster-medium div {
+  background-color: rgba(240, 194, 12, 0.6);
+}
+
+.marker-cluster-large {
+  background-color: rgba(253, 156, 115, 0.6);
+}
+
+.marker-cluster-large div {
+  background-color: rgba(241, 128, 23, 0.6);
+}
+
+/* Estilos para popups - Tema Militar */
+.leaflet-popup-content-wrapper {
+  background: rgba(0, 20, 0, 0.95) !important;
+  border: 2px solid #00ff00 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4;
+  width: auto !important;
+  color: #e2e8f0 !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(0, 20, 0, 0.95) !important;
+  border: 2px solid #00ff00 !important;
+  border-top: none !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3) !important;
+}
+
+/* Estilos específicos para o conteúdo do popup militar */
+.duck-popup-military {
+  min-width: 220px;
+  max-width: 280px;
+}
+
+.duck-popup-military .popup-header {
+  text-align: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #00ff00;
+}
+
+.duck-popup-military .popup-duck-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00ff00;
+  margin-bottom: 0.25rem;
+}
+
+.duck-popup-military .popup-duck-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 2px solid #00ff00;
+  margin: 0 auto 0.25rem;
+  color: #000;
+}
+
+.duck-popup-military .popup-header h4 {
+  margin: 0;
+  color: #00ff00;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.duck-popup-military .popup-info {
+  padding: 0.75rem;
+}
+
+.duck-popup-military .popup-info p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.duck-popup-military .popup-info strong {
+  color: #00ff00;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.duck-popup-military .popup-edit-btn {
+  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  color: #000000;
+  border: 1px solid #00ff00;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0 0.75rem 0.75rem;
+  width: calc(100% - 1.5rem);
+  transition: all 0.2s ease;
+}
+
+.duck-popup-military .popup-edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.duck-popup-military .popup-captured-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #000;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-align: center;
+  border: 1px solid #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+  margin-top: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+.duck-popup-military .popup-captured-info {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 0 0.75rem 0.75rem;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-style: italic;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Responsividade do mapa */
+.leaflet-container {
+  font-family: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 280px !important;
+    font-size: 0.875rem;
+  }
+  
+  .leaflet-popup-content {
+    margin: 0 !important;
+    line-height: 1.3;
+  }
+  
+  .leaflet-control-zoom {
+    font-size: 18px;
+    margin-left: 10px;
+    z-index: 400;
+  }
+  
+  .leaflet-control-zoom a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+  }
+  
+  .leaflet-touch .leaflet-control-layers,
+  .leaflet-touch .leaflet-bar {
+    border: 2px solid rgba(0,0,0,0.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 250px;
+  }
+  
+  .leaflet-control-zoom a {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+/* Touch improvements */
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+}
+
+.leaflet-touch .leaflet-control-zoom-in,
+.leaflet-touch .leaflet-control-zoom-out {
+  font-size: 22px;
+  line-height: 30px;
+}
+
+/* Marker cluster responsive */
+@media (max-width: 480px) {
+  .marker-cluster {
+    background-clip: padding-box;
+    border-radius: 20px;
+  }
+  
+  .marker-cluster div {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    border-radius: 15px;
+    font-size: 12px;
+    line-height: 30px;
+  }
+}

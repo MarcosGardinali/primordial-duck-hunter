@@ -1,0 +1,501 @@
+// Import Military Font + Readable Fallback
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+//Theme Variables
+:root {
+  // Military Font (para títulos e elementos importantes)
+  --theme-font-family: 'Orbitron', 'Courier New', monospace;
+  // Fonte legível (para textos longos e tabelas)
+  --theme-font-readable: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  // Fonte monospace (para códigos e dados técnicos)
+  --theme-font-mono: 'Courier New', 'Monaco', 'Menlo', monospace;
+  // Primary Colors (Green)
+  --theme-primary: #00ff00;
+  --theme-primary-dark: #00cc00;
+  --theme-primary-light: #22ff22;
+  --theme-primary-alpha: rgba(0, 255, 0, 0.1);
+  --theme-primary-alpha-medium: rgba(0, 255, 0, 0.3);
+  --theme-primary-alpha-strong: rgba(0, 255, 0, 0.5);
+
+  // Secondary Colors (Red)
+  --theme-secondary: #ef4444;
+  --theme-secondary-dark: #dc2626;
+  --theme-secondary-light: #f87171;
+  --theme-secondary-alpha: rgba(239, 68, 68, 0.1);
+  --theme-secondary-alpha-medium: rgba(239, 68, 68, 0.3);
+
+  // Warning Colors (Yellow)
+  --theme-warning: #fbbf24;
+  --theme-warning-dark: #d97706;
+  --theme-warning-alpha: rgba(251, 191, 36, 0.1);
+  --theme-warning-alpha-medium: rgba(251, 191, 36, 0.3);
+
+  // Info Colors (Blue) - For Trance Status
+  --theme-info: #3b82f6;
+  --theme-info-dark: #1d4ed8;
+  --theme-info-alpha: rgba(59, 130, 246, 0.1);
+  --theme-info-alpha-medium: rgba(59, 130, 246, 0.3);
+
+  // Background Colors (Dark)
+  --theme-bg-primary: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-bg-tertiary: #334155;
+  --theme-bg-card: rgba(0, 0, 0, 0.4);
+  --theme-bg-modal: rgba(0, 0, 0, 0.8);
+  --theme-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  // Text Colors
+  --theme-text-primary: #e2e8f0;
+  --theme-text-secondary: #cbd5e1;
+  --theme-text-muted: #94a3b8;
+  --theme-text-dark: #64748b;
+
+  // Border Colors
+  --theme-border-primary: rgba(0, 255, 0, 0.3);
+  --theme-border-secondary: rgba(255, 255, 255, 0.1);
+  --theme-border-danger: rgba(239, 68, 68, 0.3);
+
+  // Shadow Colors
+  --theme-shadow-primary: 0 0 20px rgba(0, 255, 0, 0.3);
+  --theme-shadow-secondary: 0 0 15px rgba(0, 255, 0, 0.2);
+  --theme-shadow-danger: 0 0 15px rgba(239, 68, 68, 0.3);
+  --theme-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  // Gradients
+  --theme-gradient-primary: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-dark) 100%);
+  --theme-gradient-secondary: linear-gradient(135deg, var(--theme-secondary) 0%, var(--theme-secondary-dark) 100%);
+  --theme-gradient-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 50%, rgba(51, 65, 85, 0.7) 100%);
+  --theme-gradient-card: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+// Theme Button Styles
+.theme-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid;
+  backdrop-filter: blur(10px);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.theme-btn-primary {
+  @extend .theme-btn;
+  background: var(--theme-gradient-primary);
+  color: #000000;
+  border-color: var(--theme-border-secondary);
+  box-shadow: var(--theme-shadow-primary);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--theme-primary-alpha-strong);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.theme-btn-secondary {
+  @extend .theme-btn;
+  background: var(--theme-gradient-secondary);
+  color: white;
+  border-color: var(--theme-border-danger);
+  box-shadow: var(--theme-shadow-danger);
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--theme-secondary-alpha-medium);
+  }
+}
+
+.theme-btn-outline {
+  @extend .theme-btn;
+  background: transparent;
+  color: var(--theme-primary);
+  border-color: var(--theme-border-primary);
+  
+  &:hover {
+    background: var(--theme-primary-alpha);
+    box-shadow: var(--theme-shadow-secondary);
+  }
+}
+
+.theme-btn-danger {
+  @extend .theme-btn;
+  background: var(--theme-secondary);
+  color: white;
+  border-color: var(--theme-border-danger);
+  
+  &:hover {
+    background: var(--theme-secondary-dark);
+    box-shadow: var(--theme-shadow-danger);
+  }
+}
+
+// theme Input Styles
+.theme-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--theme-border-primary);
+  border-radius: 0.5rem;
+  background: var(--theme-bg-card);
+  color: var(--theme-text-primary);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  font-family: var(--theme-font-readable); // Inter para melhor legibilidade
+  font-size: 0.95rem;
+  line-height: 1.4;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-shadow-secondary);
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  &::placeholder {
+    color: var(--theme-text-muted);
+    font-family: var(--theme-font-readable);
+  }
+}
+
+// theme Card Styles
+.theme-card {
+  background: var(--theme-bg-card);
+  border: 2px solid var(--theme-border-secondary);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--theme-shadow-card);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: var(--theme-border-primary);
+    box-shadow: var(--theme-shadow-secondary);
+  }
+}
+
+// theme Modal Styles
+.theme-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--theme-bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.theme-modal {
+  background: var(--theme-bg-primary);
+  border: 2px solid var(--theme-border-primary);
+  border-radius: 1rem;
+  box-shadow: var(--theme-shadow-primary);
+  backdrop-filter: blur(20px);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.theme-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--theme-border-secondary);
+  
+  h3 {
+    color: var(--theme-primary);
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 0 10px var(--theme-primary-alpha-medium);
+  }
+}
+
+.theme-modal-body {
+  padding: 1.5rem;
+  color: var(--theme-text-primary);
+}
+
+.theme-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--theme-border-secondary);
+}
+
+// theme Status Badges
+.theme-status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  
+  &.desperto {
+    background: var(--theme-secondary-alpha);
+    color: var(--theme-secondary);
+    border-color: var(--theme-border-danger);
+  }
+  
+  &.transe {
+    background: var(--theme-info-alpha);
+    color: var(--theme-info);
+    border-color: var(--theme-info-alpha-medium);
+  }
+  
+  &.hibernacao {
+    background: var(--theme-primary-alpha);
+    color: var(--theme-primary);
+    border-color: var(--theme-border-primary);
+  }
+  
+  &.ativo {
+    background: var(--theme-primary-alpha);
+    color: var(--theme-primary);
+    border-color: var(--theme-border-primary);
+  }
+  
+  &.inativo {
+    background: var(--theme-secondary-alpha);
+    color: var(--theme-secondary);
+    border-color: var(--theme-border-danger);
+  }
+}
+
+// theme Table Styles
+.theme-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--theme-bg-card);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  
+  th {
+    background: var(--theme-bg-secondary);
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--theme-primary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--theme-border-primary);
+    font-family: var(--theme-font-family); // Orbitron para cabeçalhos
+  }
+  
+  td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--theme-border-secondary);
+    color: var(--theme-text-primary);
+    font-family: var(--theme-font-readable); // Inter para dados da tabela
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  tr:hover {
+    background: var(--theme-primary-alpha);
+  }
+}
+
+// theme Grid Pattern
+.theme-grid-bg {
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 48px,
+      var(--theme-primary-alpha) 50px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 48px,
+      var(--theme-primary-alpha) 50px
+    );
+}
+
+// theme HUD Elements
+.theme-hud-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--theme-primary);
+  
+  &.top-left {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  &.top-right {
+    top: 10px;
+    right: 10px;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  &.bottom-left {
+    bottom: 10px;
+    left: 10px;
+    border-right: none;
+    border-top: none;
+  }
+  
+  &.bottom-right {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
+  }
+}
+
+// theme Animations
+@keyframes theme-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes theme-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--theme-primary-alpha-medium);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--theme-primary-alpha-strong);
+  }
+}
+
+.theme-pulse {
+  animation: theme-pulse 2s ease-in-out infinite;
+}
+
+.theme-glow {
+  animation: theme-glow 3s ease-in-out infinite;
+}
+
+// Responsive Utilities
+@media (max-width: 768px) {
+  .theme-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .theme-modal {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .theme-modal-header,
+  .theme-modal-body,
+  .theme-modal-actions {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .theme-modal-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+// Utility Classes para diferentes contextos de fonte
+.font-military {
+  font-family: var(--theme-font-family) !important;
+}
+
+.font-readable {
+  font-family: var(--theme-font-readable) !important;
+  line-height: 1.5;
+}
+
+.font-mono {
+  font-family: var(--theme-font-mono) !important;
+}
+
+// Melhorias específicas para legibilidade
+.readable-text {
+  font-family: var(--theme-font-readable);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.military-title {
+  font-family: var(--theme-font-family);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px var(--theme-primary-alpha-medium);
+}
+
+// Ajustes para formulários
+.form-label {
+  font-family: var(--theme-font-family);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-primary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-text {
+  font-family: var(--theme-font-readable);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--theme-text-muted);
+}
+
+// Ajustes para cards e conteúdo
+.card-title {
+  font-family: var(--theme-font-family);
+  font-weight: 600;
+  color: var(--theme-primary);
+}
+
+.card-content {
+  font-family: var(--theme-font-readable);
+  line-height: 1.5;
+  color: var(--theme-text-primary);
+}
+
+// Ajustes para dados técnicos
+.technical-data {
+  font-family: var(--theme-font-mono);
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--theme-border-secondary);
+}

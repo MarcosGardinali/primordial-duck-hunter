@@ -1,0 +1,87 @@
+services:
+  backend:
+    build: ./backend
+    container_name: duck_hunter_backend
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - PORT=8765
+      - DATABASE_URL=mysql://duck_hunter_user:123456@database:3306/duck_hunter_db?sslmode=disable
+      - DB_HOST=database
+      - DB_NAME=duck_hunter_db
+      - DB_USER=duck_hunter_user
+      - DB_PASSWORD=123456
+      - JWT_SECRET=primordial_duck_hunter_secret_key
+    networks:
+      - duck_hunter_net
+    restart: always
+    command: sh -c "sleep 15 && node setup-database.js && npm run dev"
+
+  frontend:
+    image: node:20
+    container_name: duck_hunter_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+      - "24678:24678"  # Porta para HMR WebSocket
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - VITE_HMR_HOST=0.0.0.0
+      - VITE_HMR_PORT=24678
+    command: bash -c "npm install && VITE_HMR_HOST=0.0.0.0 VITE_HMR_PORT=24678 npm run dev"
+    networks:
+      - duck_hunter_net
+    restart: always
+
+  database:
+    image: mysql:8.0
+    container_name: duck_hunter_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: duck_hunter_db
+      MYSQL_USER: duck_hunter_user
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "9876:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - duck_hunter_net
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: duck_hunter_phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_USER: duck_hunter_user
+      PMA_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "7654:80"
+    depends_on:
+      - database
+    networks:
+      - duck_hunter_net
+    restart: always
+
+networks:
+  duck_hunter_net:
+
+volumes:
+  db_data:

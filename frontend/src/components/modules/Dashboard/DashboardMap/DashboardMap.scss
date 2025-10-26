@@ -1,0 +1,191 @@
+.dashboard-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-container {
+  height: 600px;
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Corrigir posicionamento dos botões de zoom no mobile */
+@media (max-width: 768px) {
+  .map-container :deep(.leaflet-control-zoom) {
+    margin-left: 10px;
+    z-index: 400;
+  }
+}
+
+
+
+.custom-marker {
+  background: none;
+  border: none;
+}
+
+/* Estilos para popup do mapa */
+:deep(.leaflet-popup-content) {
+  margin: 0;
+  padding: 0;
+  width: 280px !important;
+}
+
+:deep(.duck-popup-military) {
+  background: var(--theme-bg-primary);
+  border: 2px solid var(--theme-primary);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-family: var(--theme-font-readable);
+}
+
+:deep(.popup-header) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--theme-bg-secondary);
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+:deep(.popup-duck-photo) {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-primary);
+  flex-shrink: 0;
+}
+
+:deep(.popup-duck-placeholder) {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--theme-bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 2px solid var(--theme-primary);
+  flex-shrink: 0;
+}
+
+:deep(.popup-header h4) {
+  margin: 0;
+  color: var(--theme-primary);
+  font-family: var(--theme-font-family);
+  font-size: 1rem;
+  flex: 1;
+}
+
+:deep(.popup-captured-badge) {
+  background: var(--theme-warning);
+  color: #000;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: var(--theme-font-family);
+}
+
+:deep(.popup-info) {
+  padding: 1rem;
+  color: var(--theme-text-primary);
+}
+
+:deep(.popup-info p) {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+:deep(.popup-info strong) {
+  color: var(--theme-primary);
+  font-family: var(--theme-font-family);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+:deep(.popup-edit-btn) {
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  padding: 0.5rem;
+  background: var(--theme-gradient-primary);
+  color: #000;
+  border: none;
+  border-radius: 0.25rem;
+  font-family: var(--theme-font-family);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+:deep(.popup-edit-btn:hover) {
+  background: var(--theme-primary-dark);
+}
+
+:deep(.popup-captured-info) {
+  padding: 1rem;
+  text-align: center;
+  color: var(--theme-text-muted);
+  font-style: italic;
+  background: var(--theme-bg-tertiary);
+}
+
+/* Estilos para popup da base DSIN */
+:deep(.dsin-popup-military) {
+  background: var(--theme-bg-primary);
+  border: 2px solid var(--theme-warning);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-family: var(--theme-font-readable);
+}
+
+:deep(.dsin-popup-military .popup-header) {
+  background: linear-gradient(45deg, #1f2937, #374151);
+  border-bottom: 2px solid var(--theme-warning);
+}
+
+:deep(.base-icon) {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--theme-warning);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 2px solid var(--theme-warning);
+  flex-shrink: 0;
+}
+
+:deep(.popup-base-badge) {
+  background: var(--theme-warning);
+  color: #000;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: var(--theme-font-family);
+}
+
+:deep(.popup-base-info) {
+  padding: 1rem;
+  background: var(--theme-bg-secondary);
+  border-top: 1px solid var(--theme-border-primary);
+  color: var(--theme-text-primary);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+:deep(.dsin-base-marker) {
+  background: none;
+  border: none;
+}
+

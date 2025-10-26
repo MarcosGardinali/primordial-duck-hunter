@@ -1,0 +1,36 @@
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.content-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    overflow-x: hidden;
+  }
+  
+  .content-wrapper {
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    overflow-x: hidden;
+    padding: 0;
+  }
+  
+  .content-wrapper {
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}

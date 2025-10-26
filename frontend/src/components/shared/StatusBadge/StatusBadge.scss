@@ -1,0 +1,29 @@
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  border: 1px solid;
+  font-family: var(--theme-font-family);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &.status-awake { 
+    background: var(--theme-secondary-alpha);
+    color: var(--theme-secondary);
+    border-color: var(--theme-secondary);
+  }
+  
+  &.status-trance { 
+    background: var(--theme-info-alpha);
+    color: var(--theme-info);
+    border-color: var(--theme-info);
+  }
+  
+  &.status-hibernation { 
+    background: var(--theme-primary-alpha);
+    color: var(--theme-primary);
+    border-color: var(--theme-primary);
+  }
+}
