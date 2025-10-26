@@ -11,11 +11,6 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 1000
-    },
-    hmr: {
-      host: '0.0.0.0',
-      port: 24678,
-      protocol: 'ws'
     }
   },
   resolve: {
