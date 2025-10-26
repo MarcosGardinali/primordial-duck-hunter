@@ -21,7 +21,7 @@ services:
     networks:
       - duck_hunter_net
     restart: always
-    command: sh -c "sleep 15 && node setup-database.js && npm run dev"
+    command: sh -c "sleep 30 && node setup-database.js && npm run dev"
 
   frontend:
     image: node:20
@@ -38,7 +38,8 @@ services:
       - WATCHPACK_POLLING=true
       - VITE_HMR_HOST=0.0.0.0
       - VITE_HMR_PORT=24678
-    command: bash -c "npm install && VITE_HMR_HOST=0.0.0.0 VITE_HMR_PORT=24678 npm run dev"
+      - HOST=0.0.0.0
+    command: bash -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
     networks:
       - duck_hunter_net
     restart: always
@@ -51,6 +52,11 @@ services:
       MYSQL_DATABASE: duck_hunter_db
       MYSQL_USER: duck_hunter_user
       MYSQL_PASSWORD: 123456
+      # Configurações de performance para ambiente com recursos limitados
+      MYSQL_INNODB_BUFFER_POOL_SIZE: 64M
+      MYSQL_INNODB_USE_NATIVE_AIO: 0
+      MYSQL_INNODB_FLUSH_METHOD: O_DIRECT
+    command: --max-allowed-packet=32505856 --innodb-buffer-pool-size=64M
     ports:
       - "9876:3306"
     volumes:
@@ -59,9 +65,11 @@ services:
       - duck_hunter_net
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "duck_hunter_user", "--password=123456"]
+      interval: 10s
+      timeout: 60s
+      retries: 15
+      start_period: 60s
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
