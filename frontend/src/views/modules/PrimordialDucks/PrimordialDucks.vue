@@ -113,6 +113,7 @@
                     type="number"
                     :step="0.01"
                     required
+                    placeholder="Ex: 5.9"
                   />
                   <BaseInput
                     id="duck-height-unit"
@@ -139,6 +140,7 @@
                     type="number"
                     :step="0.01"
                     required
+                    placeholder="Ex: 458.96"
                   />
                   <BaseInput
                     id="duck-weight-unit"
@@ -636,6 +638,15 @@ export default {
       
       // Salvar URL da foto no banco
       const formData = { ...this.form }
+      
+      // Converter vírgula para ponto e garantir que é um número
+      if (typeof formData.height === 'string') {
+        formData.height = parseFloat(formData.height.replace(',', '.'))
+      }
+      if (typeof formData.weight === 'string') {
+        formData.weight = parseFloat(formData.weight.replace(',', '.'))
+      }
+
       formData.photo_url = this.getCurrentPhotoUrl()
       
       try {

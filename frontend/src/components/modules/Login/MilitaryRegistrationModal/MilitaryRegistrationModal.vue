@@ -205,8 +205,8 @@ export default {
           email: this.form.email,
           password: this.form.password,
           bloodType: this.form.bloodType || null,
-          height: this.form.height ? parseFloat(this.form.height) : null,
-          weight: this.form.weight ? parseFloat(this.form.weight) : null,
+          height: this.form.height ? parseFloat(String(this.form.height).replace(',', '.')) : null,
+          weight: this.form.weight ? parseFloat(String(this.form.weight).replace(',', '.')) : null,
           rank: this.form.rank,
           specialization: this.form.specialization || null
         })
