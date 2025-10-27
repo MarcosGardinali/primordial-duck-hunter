@@ -216,6 +216,7 @@
                 :initial-lat="form.latitude || -14.235" 
                 :initial-lng="form.longitude || -51.9253"
                 @coordinates-changed="onCoordinatesChanged"
+                @loading-changed="onMapLoadingChanged"
               />
             </div>
 
@@ -282,6 +283,7 @@ export default {
       duckToDelete: null,
       currentPage: 1,
       filters: {},
+      isMapLoading: false,
       debounceTimer: null,
       form: {
         nickname: '',
@@ -524,6 +526,10 @@ export default {
       return labels[type][unit] || unit
     },
 
+    onMapLoadingChanged(isLoading) {
+      this.isMapLoading = isLoading
+    },
+
     onCoordinatesChanged(coords) {
       this.form.latitude = coords.latitude
       this.form.longitude = coords.longitude
@@ -619,6 +625,11 @@ export default {
       this.duckToDelete = null
     },
     async submitForm() {
+      if (this.isMapLoading) {
+        this.toast.info('Aguarde enquanto as informações de localização são obtidas.')
+        return
+      }
+
       if (!this.validateForm()) {
         return
       }

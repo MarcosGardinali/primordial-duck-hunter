@@ -44,7 +44,8 @@ export default {
         city: '',
         country: ''
       },
-      referencePoint: ''
+      referencePoint: '',
+      loading: false
     }
   },
   mounted() {
@@ -65,10 +66,17 @@ export default {
     initMap() {
       if (!this.$refs.mapContainer || this.map) return
       
-      this.map = L.map(this.$refs.mapContainer).setView([this.latitude, this.longitude], 6)
+      const worldBounds = L.latLngBounds(L.latLng(-85.05112878, -180), L.latLng(85.05112878, 180));
+
+      this.map = L.map(this.$refs.mapContainer, {
+        maxBounds: worldBounds,
+        maxBoundsViscosity: 1.0
+      }).setView([this.latitude, this.longitude], 6)
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+        attribution: '© OpenStreetMap contributors',
+        noWrap: true,
+        bounds: worldBounds
       }).addTo(this.map)
 
       this.marker = L.marker([this.latitude, this.longitude], {
@@ -76,7 +84,9 @@ export default {
       }).addTo(this.map)
 
       this.map.on('click', (e) => {
-        this.updatePosition(e.latlng.lat, e.latlng.lng)
+        if (worldBounds.contains(e.latlng)) {
+          this.updatePosition(e.latlng.lat, e.latlng.lng)
+        }
       })
       
       this.marker.on('dragend', (e) => {
@@ -85,6 +95,9 @@ export default {
       })
     },
     async updatePosition(lat, lng) {
+      this.loading = true
+      this.$emit('loading-changed', this.loading)
+
       this.latitude = lat
       this.longitude = lng
       if (this.marker) {
@@ -133,6 +146,9 @@ export default {
           precisionUnit: precision.unit,
           referencePoint: 'Nenhum'
         })
+      } finally {
+        this.loading = false
+        this.$emit('loading-changed', this.loading)
       }
     },
     generateRandomPrecision(countryCode) {

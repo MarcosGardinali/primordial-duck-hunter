@@ -95,7 +95,8 @@ export default {
         }).setView([-14.235, -51.9253], 4)
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors'
+          attribution: '© OpenStreetMap contributors',
+          noWrap: true
         }).addTo(this.map)
 
         this.markerClusterGroup = L.markerClusterGroup({

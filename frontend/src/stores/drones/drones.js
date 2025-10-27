@@ -44,7 +44,7 @@ export const useDroneStore = defineStore('drones', {
     async createDrone(droneData) {
       try {
         const response = await api.post('/drones', droneData)
-        this.drones.push(response.data)
+        await this.fetchDrones()
         return response.data
       } catch (error) {
         this.error = error.response?.data?.error || 'Erro ao criar drone'
