@@ -23,7 +23,7 @@ jobs:
         env:
           DEPLOY_PATH: /home/marcosgardinali/coder-challenge-2025
           SSH_USER: marcosgardinali
-          SERVER_IP: 74.249.35.118
+          SERVER_IP: 172.210.234.104
         run: |
           # Criar diretório se não existir
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP "mkdir -p $DEPLOY_PATH"
@@ -39,7 +39,7 @@ jobs:
       - name: Create .env files
         env:
           SSH_USER: marcosgardinali
-          SERVER_IP: 74.249.35.118
+          SERVER_IP: 172.210.234.104
           DEPLOY_PATH: /home/marcosgardinali/coder-challenge-2025
           ENV_BACKEND: ${{ secrets.ENV_BACKEND }}
           ENV_FRONTEND: ${{ secrets.ENV_FRONTEND }}
@@ -50,7 +50,7 @@ jobs:
       - name: Build and restart containers
         env:
           SSH_USER: marcosgardinali
-          SERVER_IP: 74.249.35.118
+          SERVER_IP: 172.210.234.104
         run: |
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP 'cd /home/marcosgardinali/coder-challenge-2025 && \
           docker compose down && \
