@@ -111,7 +111,7 @@ export default {
       showRechargeModal: false,
       isRecharging: false,
       displayBattery: 0,
-      strategyChances: [50, 50, 50, 50, 50],
+      strategyChances: {},
       advancedMode: false,
       isMobile: false,
       droneStore: useDroneControlStore(),
@@ -136,7 +136,9 @@ export default {
     try {
       await Promise.all([
         this.droneStore.fetchDroneStatus(),
-        this.duckStore.fetchDucks()
+        this.duckStore.fetchDucks(),
+        this.droneStore.fetchDefenses(),
+        this.droneStore.fetchStrategies()
       ])
       this.displayBattery = this.droneStore.droneStatus?.battery || 0
     } catch (error) {

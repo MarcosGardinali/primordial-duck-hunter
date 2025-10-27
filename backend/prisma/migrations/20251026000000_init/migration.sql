@@ -68,6 +68,7 @@ CREATE TABLE `primordial_ducks` (
     `superpower_id` INTEGER NULL,
     `captured` BOOLEAN NOT NULL DEFAULT false,
     `capture_strategy` VARCHAR(255) NULL,
+    `capture_defense` VARCHAR(255) NULL,
     `capture_date` DATETIME(3) NULL,
     `discovered_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,

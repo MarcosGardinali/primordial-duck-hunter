@@ -26,13 +26,17 @@
                         <span class="label">Capturado via:</span>
                         <span class="strategy">{{ duck.capture_strategy }}</span>
                     </div>
+                    <div v-if="duck.capture_defense" class="info-item">
+                        <span class="label">Defesa Utilizada:</span>
+                        <span class="strategy">{{ duck.capture_defense }}</span>
+                    </div>
                 </div>
                 <div class="card-actions">
                     <button @click="$emit('watchCaptureVideo', duck)" class="watch-video-btn">
-                        🎬 Assistir Vídeo da Captura
+                        <img src="@/assets/icons/movie.svg" alt="Assistir Vídeo" /> Assistir Vídeo da Captura
                     </button>
                     <button @click="handleLiberateDuck(duck)" class="liberate-btn">
-                        🕊️ Libertar Pato
+                        <img src="@/assets/icons/bird.svg" alt="Libertar Pato" /> Libertar Pato
                     </button>
                 </div>
             </div>

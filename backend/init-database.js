@@ -61,6 +61,7 @@ const initDatabase = async () => {
         superpower_id INT,
         captured BOOLEAN DEFAULT FALSE,
         capture_strategy VARCHAR(255),
+        capture_defense VARCHAR(255),
         capture_date TIMESTAMP NULL,
         discovered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

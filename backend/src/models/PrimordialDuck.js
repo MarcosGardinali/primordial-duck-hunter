@@ -22,6 +22,7 @@ class PrimordialDuck {
     this.superpower_id = data.superpower_id;
     this.captured = data.captured;
     this.capture_strategy = data.capture_strategy;
+    this.capture_defense = data.capture_defense;
     this.capture_date = data.capture_date;
     this.discovered_at = data.discovered_at;
     this.updated_at = data.updated_at;
@@ -59,6 +60,7 @@ class PrimordialDuck {
       superpower_id: this.superpower_id,
       captured: this.captured,
       capture_strategy: this.capture_strategy,
+      capture_defense: this.capture_defense,
       capture_date: this.capture_date,
       discovered_at: this.discovered_at,
       updated_at: this.updated_at,

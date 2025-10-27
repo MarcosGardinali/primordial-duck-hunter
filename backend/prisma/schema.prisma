@@ -78,6 +78,7 @@ model PrimordialDuck {
   superpowerId       Int?               @map("superpower_id")
   captured           Boolean            @default(false)
   captureStrategy    String?            @map("capture_strategy") @db.VarChar(255)
+  captureDefense     String?            @map("capture_defense") @db.VarChar(255)
   captureDate        DateTime?          @map("capture_date")
   discoveredAt       DateTime           @default(now()) @map("discovered_at")
   updatedAt          DateTime           @updatedAt @map("updated_at")

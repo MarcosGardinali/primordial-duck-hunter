@@ -1,9 +1,10 @@
 const AuthService = require('../services/AuthService');
 const { UnauthorizedError } = require('../utils/errors');
+const prisma = require('../config/prisma');
 
 const authService = new AuthService();
 
-const auth = (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     
@@ -12,7 +13,13 @@ const auth = (req, res, next) => {
     }
     
     const decoded = authService.verifyToken(token);
-    req.user = decoded;
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+
+    if (!user) {
+      throw new UnauthorizedError('Usuário não encontrado ou token inválido');
+    }
+
+    req.user = user;
     next();
   } catch (error) {
     next(error);

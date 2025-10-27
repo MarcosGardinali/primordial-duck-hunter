@@ -6,8 +6,15 @@ export const useDroneControlStore = defineStore('droneControl', {
     droneStatus: null,
     missionResults: [],
     loading: false,
-    error: null
+    error: null,
+    defenses: [],
+    strategies: []
   }),
+
+  getters: {
+    getDefenses: (state) => state.defenses,
+    getStrategies: (state) => state.strategies
+  },
 
   actions: {
     async fetchDroneStatus() {
@@ -23,6 +30,24 @@ export const useDroneControlStore = defineStore('droneControl', {
       }
     },
 
+    async fetchDefenses() {
+      try {
+        const response = await api.get('/drone-control/defenses');
+        this.defenses = response.data;
+      } catch (error) {
+        console.error('Erro ao buscar defesas:', error);
+      }
+    },
+
+    async fetchStrategies() {
+      try {
+        const response = await api.get('/drone-control/strategies');
+        this.strategies = response.data;
+      } catch (error) {
+        console.error('Erro ao buscar estratégias:', error);
+      }
+    },
+
     async analyzeTarget(duckId) {
       try {
         const response = await api.get(`/drone-control/analyze/${duckId}`)
@@ -33,9 +58,12 @@ export const useDroneControlStore = defineStore('droneControl', {
       }
     },
 
-    async executeMission(duckId, strategy) {
+    async executeMission(duckId, strategyId, defenseId) {
       try {
-        const response = await api.post(`/drone-control/mission/${duckId}`, { strategy_index: strategy })
+        const response = await api.post(`/drone-control/mission/${duckId}`, { 
+          strategy_id: strategyId,
+          defense_id: defenseId
+        })
         this.missionResults.push(response.data)
         
         // Atualizar status do drone com os dados retornados

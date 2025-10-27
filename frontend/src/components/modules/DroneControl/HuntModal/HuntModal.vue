@@ -45,21 +45,18 @@
               id="strategy-select"
               v-model="selectedStrategy"
               type="select"
-              class="strategy-select"
             >
-              <option value="null">Escolha uma estratégia...</option>
-              <option value="0" :disabled="!canUseStrategy(0)">Ataque Furtivo {{ !canUseStrategy(0) ? '(Sem bateria)' : '' }}</option>
-              <option value="1" :disabled="!canUseStrategy(1)">Bombardeio Aéreo {{ !canUseStrategy(1) ? '(Sem bateria)' : '' }}</option>
-              <option value="2" :disabled="!canUseStrategy(2)">Captura com Rede {{ !canUseStrategy(2) ? '(Sem bateria)' : '' }}</option>
-              <option value="3" :disabled="!canUseStrategy(3)">Distração Sonora {{ !canUseStrategy(3) ? '(Sem bateria)' : '' }}</option>
-              <option value="4" :disabled="!canUseStrategy(4)">Ataque Elétrico {{ !canUseStrategy(4) ? '(Sem bateria)' : '' }}</option>
+              <option value="null" disabled>Escolha uma estratégia...</option>
+              <option v-for="strategy in strategies" :key="strategy.id" :value="strategy.id" :disabled="!canUseStrategy(strategy)">
+                {{ strategy.name }} {{ !canUseStrategy(strategy) ? '(Sem bateria)' : '' }}
+              </option>
             </BaseInput>
           </div>
           
-          <div v-if="selectedStrategy !== null && selectedStrategy !== 'null'" class="strategy-info">
+          <div v-if="selectedStrategyInfo" class="strategy-info">
             <div class="strategy-details">
-              <h4>{{ getStrategyName(selectedStrategy) }}</h4>
-              <p>{{ getStrategyDescription(selectedStrategy) }}</p>
+              <h4>{{ selectedStrategyInfo.name }}</h4>
+              <p>{{ selectedStrategyInfo.description }}</p>
               
               <div class="success-chances">
                 <div class="chance-item capture">
@@ -74,16 +71,34 @@
                 </div>
                 <div class="chance-item energy">
                   <span class="chance-label">Energia Necessária:</span>
-                  <span class="chance-value">{{ getEnergyRequired(selectedStrategy) }}%</span>
+                  <span class="chance-value">{{ selectedStrategyInfo.energy_cost }}%</span>
                 </div>
               </div>
             </div>
           </div>
+
+          <h3 style="margin-top: 20px;"><img src="@/assets/icons/superpower.svg" alt="Defesa" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">Selecione o Sistema de Defesa</h3>
+          <div class="strategy-selector">
+            <BaseInput
+              id="defense-select"
+              v-model="selectedDefense"
+              type="select"
+            >
+              <option value="null" disabled>Escolha uma defesa...</option>
+              <option v-for="defense in defenses" :key="defense.id" :value="defense.id">
+                {{ defense.name }}
+              </option>
+            </BaseInput>
+            <p v-if="selectedDefenseInfo" class="defense-description" style="margin-top: 10px; text-align: center;">
+              {{ selectedDefenseInfo.description }}
+            </p>
+          </div>
+
           <div class="modal-actions">
             <button @click="modalStep = 1" class="btn btn-secondary">Voltar</button>
             <button 
               @click="executeMission" 
-              :disabled="selectedStrategy === null || selectedStrategy === 'null' || !droneStore.droneStatus?.operational"
+              :disabled="selectedStrategy === null || selectedStrategy === 'null' || selectedDefense === null || selectedDefense === 'null' || !droneStore.droneStatus?.operational"
               class="btn btn-danger"
             >
               Tentar Captura
@@ -174,24 +189,37 @@ export default {
             required: true,
         },
         strategyChances: {
-            type: Array,
-            default: () => [50, 50, 50, 50, 50]
+            type: Object,
+            default: () => ({})
         },
     },
     data() {
         return {
             modalStep: 1,
-            selectedStrategy: null,
+            selectedStrategy: 'null',
+            selectedDefense: 'null',
             missionResult: null,
             missionLoading: false,
             duckCaptureGif,
             toast: useToast()
         }
     },
-    computed: {},
-    watch: {},
-    created() {},
-    mounted() {},
+    computed: {
+        defenses() {
+            return this.droneStore.defenses;
+        },
+        strategies() {
+            return this.droneStore.strategies;
+        },
+        selectedStrategyInfo() {
+            if (this.selectedStrategy === null || this.selectedStrategy === 'null') return null;
+            return this.strategies.find(s => s.id === this.selectedStrategy);
+        },
+        selectedDefenseInfo() {
+            if (this.selectedDefense === null || this.selectedDefense === 'null') return null;
+            return this.defenses.find(d => d.id === this.selectedDefense);
+        }
+    },
     methods: {
         getDuckPhotoUrl(duck) {
             const hibernationStatus = duck.hibernation_status
@@ -231,55 +259,29 @@ export default {
         proceedToStrategy() {
             this.modalStep = 2
         },
-        getStrategyName(index) {
-            const strategies = [
-                'Ataque Furtivo',
-                'Bombardeio Aéreo', 
-                'Captura com Rede',
-                'Distração Sonora',
-                'Ataque Elétrico'
-            ]
-            return strategies[index] || 'Estratégia Desconhecida'
-        },
-        getStrategyDescription(index) {
-            const descriptions = [
-                'Aproximação silenciosa pelas costas do alvo',
-                'Ataque direto com explosivos de alta potência',
-                'Captura usando rede eletromagnética',
-                'Confundir o alvo com sons de alta frequência',
-                'Descarga elétrica para paralisar temporariamente'
-            ]
-            return descriptions[index] || 'Descrição não disponível'
-        },
-        getSuccessRate(index) {
-            const rates = [85, 65, 75, 55, 70]
-            return rates[index] || 50
-        },
-        getEnergyRequired(index) {
-            const energy = [25, 45, 35, 20, 40]
-            return energy[index] || 30
-        },
         getCaptureChanceClass(chance) {
             if (chance >= 70) return 'high-chance'
             if (chance >= 40) return 'medium-chance'
             return 'low-chance'
         },
         getCurrentCaptureChance() {
-            if (this.selectedStrategy === null || this.selectedStrategy === 'null') return 0
-            return this.strategyChances[parseInt(this.selectedStrategy)] || 0
+            if (!this.selectedStrategyInfo || !this.strategyChances) return 0;
+            const strategyId = this.selectedStrategyInfo.id;
+            return this.strategyChances[strategyId] || 0;
         },
-        canUseStrategy(index) {
-            return this.droneStore.droneStatus.battery >= this.getEnergyRequired(index)
+        canUseStrategy(strategy) {
+            if (!this.droneStore.droneStatus) return false;
+            return this.droneStore.droneStatus.battery >= strategy.energy_cost;
         },
         async executeMission() {
-            if (!this.selectedDuck || this.selectedStrategy === null || this.selectedStrategy === 'null') return
+            if (!this.selectedDuck || !this.selectedStrategyInfo || !this.selectedDefenseInfo) return;
 
             try {
                 this.modalStep = 3
                 this.missionLoading = true
 
                 // Executar missão
-                const result = await this.droneStore.executeMission(this.selectedDuck.id, parseInt(this.selectedStrategy))
+                const result = await this.droneStore.executeMission(this.selectedDuck.id, this.selectedStrategyInfo.id, this.selectedDefenseInfo.id)
 
                 // Aguardar 4 segundos para o loading
                 await new Promise(resolve => setTimeout(resolve, 4000))
@@ -301,21 +303,21 @@ export default {
             if (!this.missionResult) return ''
 
             const success = this.missionResult.mission.success
-            const strategyIndex = parseInt(this.selectedStrategy)
+            const strategyId = this.missionResult.strategy_used.id
 
             if (!success) {
                 return defeatVideo
             }
 
             const videoMap = {
-                0: stealthVideo,     // Ataque Furtivo
-                1: bombVideo,        // Bombardeio Aéreo
-                2: netVideo,         // Captura com Rede
-                3: soundVideo,       // Distração Sonora
-                4: electricVideo     // Ataque Elétrico
+                'S001': stealthVideo,
+                'S002': bombVideo,
+                'S003': netVideo,
+                'S004': soundVideo,
+                'S005': electricVideo
             }
 
-            return videoMap[strategyIndex] || stealthVideo
+            return videoMap[strategyId] || stealthVideo
         }
     },
 };

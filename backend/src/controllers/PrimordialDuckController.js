@@ -30,6 +30,7 @@ class PrimordialDuckController {
       superpower_id: duck.superpowerId,
       captured: duck.captured,
       capture_strategy: duck.captureStrategy,
+      capture_defense: duck.captureDefense,
       capture_date: duck.captureDate,
       discovered_at: duck.discoveredAt,
       updated_at: duck.updatedAt,

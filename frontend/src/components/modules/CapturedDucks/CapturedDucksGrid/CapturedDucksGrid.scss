@@ -132,6 +132,18 @@
   margin-top: 1rem;
 }
 
+.watch-video-btn, .liberate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 .watch-video-btn {
   width: 100%;
   padding: 0.8rem;

@@ -5,6 +5,14 @@ const { HIBERNATION_STATUS } = require('../utils/enums');
 
 const router = express.Router();
 
+const strategies = [
+  { id: 'S001', name: 'Ataque Furtivo', description: 'Aproximação silenciosa pelas costas do alvo', energy_cost: 25, success_rate: 85 },
+  { id: 'S002', name: 'Bombardeio Aéreo', description: 'Ataque direto com explosivos de alta potência', energy_cost: 45, success_rate: 65 },
+  { id: 'S003', name: 'Captura com Rede', description: 'Captura usando rede eletromagnética', energy_cost: 35, success_rate: 75 },
+  { id: 'S004', name: 'Distração Sonora', description: 'Confundir o alvo com sons de alta frequência', energy_cost: 20, success_rate: 55 },
+  { id: 'S005', name: 'Ataque Elétrico', description: 'Descarga elétrica para paralisar temporariamente', energy_cost: 40, success_rate: 70 },
+];
+
 // Sistema de controle do drone de captura
 class CaptureSystem {
   constructor() {
@@ -122,58 +130,28 @@ class CaptureSystem {
 
   // Calcular estratégias de ataque
   calculateAttackStrategies(duck, weaknesses) {
-    const strategies = [];
+    const attackStrategies = [];
     
     weaknesses.forEach(weakness => {
       switch (weakness.strategy) {
         case 'aerial_drop':
-          strategies.push({
-            name: 'Bombardeio Aéreo',
-            description: 'Soltar pedras de 50kg de altura de 100m',
-            success_rate: 75,
-            energy_cost: 30,
-            risk_level: 'Médio'
-          });
+          attackStrategies.push(strategies.find(s => s.id === 'S002'));
           break;
           
         case 'stealth_approach':
-          strategies.push({
-            name: 'Aproximação Furtiva',
-            description: 'Usar modo silencioso e dardos tranquilizantes',
-            success_rate: 90,
-            energy_cost: 15,
-            risk_level: 'Baixo'
-          });
+          attackStrategies.push(strategies.find(s => s.id === 'S001'));
           break;
           
         case 'sound_distraction':
-          strategies.push({
-            name: 'Distração Sonora',
-            description: 'Emitir frequências específicas para desorientar',
-            success_rate: 60,
-            energy_cost: 20,
-            risk_level: 'Médio'
-          });
+          attackStrategies.push(strategies.find(s => s.id === 'S004'));
           break;
           
         case 'conventional_attack':
-          strategies.push({
-            name: 'Ataque Convencional',
-            description: 'Uso de armamento padrão e táticas militares',
-            success_rate: 70,
-            energy_cost: 40,
-            risk_level: 'Alto'
-          });
+          attackStrategies.push(strategies.find(s => s.id === 'S005'));
           break;
           
         case 'net_capture':
-          strategies.push({
-            name: 'Captura com Rede',
-            description: 'Lançar rede de contenção reforçada',
-            success_rate: 85,
-            energy_cost: 25,
-            risk_level: 'Baixo'
-          });
+          attackStrategies.push(strategies.find(s => s.id === 'S003'));
           break;
       }
     });
@@ -182,11 +160,11 @@ class CaptureSystem {
     if (duck.superpower_name) {
       const counterStrategy = this.generateCounterStrategy(duck.superpower_name, duck.superpower_classification);
       if (counterStrategy) {
-        strategies.push(counterStrategy);
+        attackStrategies.push(counterStrategy);
       }
     }
 
-    return strategies.sort((a, b) => b.success_rate - a.success_rate);
+    return attackStrategies.filter(Boolean).sort((a, b) => b.success_rate - a.success_rate);
   }
 
   // Sistema Gerador de Defesas Aleatórias
@@ -286,7 +264,7 @@ class CaptureSystem {
   }
 
   // Calcular chance de captura baseada no status, mutações e estratégia
-  calculateCaptureChance(duck, strategyIndex) {
+  calculateCaptureChance(duck, strategyId) {
     let baseChance = 0;
     
     // Chance base por status de hibernação
@@ -312,35 +290,35 @@ class CaptureSystem {
     
     // Modificador por tipo de estratégia
     const strategyModifiers = {
-      0: { // Ataque Furtivo
+      'S001': { // Ataque Furtivo
         hibernacao_profunda: 10, // Muito eficaz contra hibernação
         em_transe: 5,
         desperto: -5 // Menos eficaz contra despertos
       },
-      1: { // Bombardeio Aéreo
+      'S002': { // Bombardeio Aéreo
         hibernacao_profunda: -10, // Pode acordar o pato
         em_transe: 0,
         desperto: 10 // Eficaz contra despertos
       },
-      2: { // Captura com Rede
+      'S003': { // Captura com Rede
         hibernacao_profunda: 5,
         em_transe: 10, // Muito eficaz contra transe
         desperto: 0
       },
-      3: { // Distração Sonora
+      'S004': { // Distração Sonora
         hibernacao_profunda: -15, // Ineficaz contra hibernação
         em_transe: 15, // Muito eficaz contra transe
         desperto: 5
       },
-      4: { // Ataque Elétrico
+      'S005': { // Ataque Elétrico
         hibernacao_profunda: 0,
         em_transe: -5,
         desperto: 15 // Muito eficaz contra despertos
       }
     };
     
-    if (strategyIndex !== undefined && strategyModifiers[strategyIndex]) {
-      const modifier = strategyModifiers[strategyIndex][duck.hibernation_status] || 0;
+    if (strategyId !== undefined && strategyModifiers[strategyId]) {
+      const modifier = strategyModifiers[strategyId][duck.hibernation_status] || 0;
       baseChance += modifier;
     }
     
@@ -349,12 +327,12 @@ class CaptureSystem {
   }
 
   // Executar missão de captura
-  async executeMission(strategy, duck, strategyIndex) {
+  async executeMission(strategy, duck, defenseId) {
     const status = await this.getStatusFromDB();
     const energyCost = strategy.energy_cost;
     
     // Calcular chance de captura baseada no pato e estratégia (mesma lógica da análise)
-    const captureChance = this.calculateCaptureChance(duck, strategyIndex);
+    const captureChance = this.calculateCaptureChance(duck, strategy.id);
     const success = Math.random() * 100 < captureChance;
     
     const newBattery = Math.max(0, status.battery - energyCost);
@@ -362,7 +340,14 @@ class CaptureSystem {
     let damageTaken = 0;
     
     if (!success) {
-      damageTaken = Math.random() * 20;
+      let baseDamage = Math.random() * 20;
+      const selectedDefense = defenses.find(d => d.id === defenseId);
+
+      if (selectedDefense) {
+        baseDamage *= (1 - selectedDefense.integrityProtection);
+      }
+      
+      damageTaken = baseDamage;
       newIntegrity = Math.max(0, status.integrity - damageTaken);
     }
     
@@ -408,6 +393,43 @@ class CaptureSystem {
 
 const captureSystem = new CaptureSystem();
 
+const defenses = [
+  {
+    id: 'D001',
+    name: 'Escudo de Energia Simples',
+    description: 'Uma barreira de energia básica que absorve uma pequena quantidade de dano.',
+    integrityProtection: 0.2, // Reduz o dano em 20%
+  },
+  {
+    id: 'D002',
+    name: 'Camuflagem Óptica',
+    description: 'Dificulta o rastreamento do drone, diminuindo a precisão do contra-ataque do pato.',
+    integrityProtection: 0.4, // Reduz o dano em 40%
+  },
+  {
+    id: 'D003',
+    name: 'Sistema de Reparos de Emergência',
+    description: 'Nanobôs que reparam uma porção do dano sofrido quase que instantaneamente.',
+    integrityProtection: 0.6, // Reduz o dano em 60%
+  },
+  {
+    id: 'D004',
+    name: 'Gerador de Defesas Aleatórias (GDA)',
+    description: 'Utiliza o GDA para criar uma contramedida maluca e imprevisível. Alta proteção, alto risco.',
+    integrityProtection: 0.85, // Reduz o dano em 85%
+  },
+];
+
+// Endpoint para listar as defesas
+router.get('/defenses', auth, (req, res) => {
+  res.json(defenses);
+});
+
+// Endpoint para listar as estratégias
+router.get('/strategies', auth, (req, res) => {
+  res.json(strategies);
+});
+
 // Análise de alvo específico
 router.get('/analyze/:id', auth, async (req, res, next) => {
   try {
@@ -438,21 +460,18 @@ router.get('/analyze/:id', auth, async (req, res, next) => {
     };
 
     const weaknesses = captureSystem.identifyWeaknesses(duckData);
-    const strategies = captureSystem.calculateAttackStrategies(duckData, weaknesses);
+    const availableStrategies = captureSystem.calculateAttackStrategies(duckData, weaknesses);
     
     // Calcular chances para cada estratégia
-    const strategyChances = [
-      captureSystem.calculateCaptureChance(duckData, 0), // Furtivo
-      captureSystem.calculateCaptureChance(duckData, 1), // Bombardeio
-      captureSystem.calculateCaptureChance(duckData, 2), // Rede
-      captureSystem.calculateCaptureChance(duckData, 3), // Sonora
-      captureSystem.calculateCaptureChance(duckData, 4)  // Elétrico
-    ];
+    const strategyChances = {};
+    strategies.forEach(strategy => {
+      strategyChances[strategy.id] = captureSystem.calculateCaptureChance(duckData, strategy.id);
+    });
 
     res.json({
       target: duckData,
       weaknesses: weaknesses,
-      strategies: strategies,
+      strategies: availableStrategies,
       strategy_chances: strategyChances,
       drone_status: await captureSystem.getStatus()
     });
@@ -464,7 +483,7 @@ router.get('/analyze/:id', auth, async (req, res, next) => {
 // Iniciar missão de captura
 router.post('/mission/:id', auth, async (req, res, next) => {
   try {
-    const { strategy_index } = req.body;
+    const { strategy_id, defense_id } = req.body;
     
     const duck = await prisma.primordialDuck.findUnique({
       where: { 
@@ -490,15 +509,9 @@ router.post('/mission/:id', auth, async (req, res, next) => {
       weight: parseFloat(duck.weight)
     };
 
-    const strategies = [
-      { name: 'Ataque Furtivo', energy_cost: 25, success_rate: 85 },
-      { name: 'Bombardeio Aéreo', energy_cost: 45, success_rate: 65 },
-      { name: 'Captura com Rede', energy_cost: 35, success_rate: 75 },
-      { name: 'Distração Sonora', energy_cost: 20, success_rate: 55 },
-      { name: 'Ataque Elétrico', energy_cost: 40, success_rate: 70 }
-    ];
+    const selectedStrategy = strategies.find(s => s.id === strategy_id);
     
-    if (!strategies[strategy_index]) {
+    if (!selectedStrategy) {
       return res.status(400).json({ error: 'Estratégia inválida' });
     }
 
@@ -506,15 +519,17 @@ router.post('/mission/:id', auth, async (req, res, next) => {
     const flightData = await captureSystem.flyToTarget(parseFloat(duck.latitude), parseFloat(duck.longitude));
     
     // Executar missão
-    const missionResult = await captureSystem.executeMission(strategies[strategy_index], duckData, strategy_index);
+    const missionResult = await captureSystem.executeMission(selectedStrategy, duckData, defense_id);
 
     // Se capturou com sucesso, marcar como capturado
     if (missionResult.success) {
+      const defenseName = defenses.find(d => d.id === defense_id)?.name || 'Nenhuma';
       await prisma.primordialDuck.update({
         where: { id: parseInt(req.params.id) },
         data: {
           captured: true,
-          captureStrategy: strategies[strategy_index].name,
+          captureStrategy: selectedStrategy.name,
+          captureDefense: defenseName,
           captureDate: new Date()
         }
       });
@@ -525,7 +540,7 @@ router.post('/mission/:id', auth, async (req, res, next) => {
     res.json({
       flight: flightData,
       mission: missionResult,
-      strategy_used: strategies[strategy_index],
+      strategy_used: selectedStrategy,
       drone_status: finalStatus
     });
   } catch (error) {
@@ -549,6 +564,7 @@ router.get('/captured', auth, async (req, res, next) => {
       hibernation_status: duck.hibernationStatus,
       mutations_count: duck.mutationsCount,
       capture_strategy: duck.captureStrategy,
+      capture_defense: duck.captureDefense,
       capture_date: duck.captureDate,
       superpower_name: duck.superpower?.name,
       height: duck.height,
