@@ -1,6 +1,37 @@
-# Coder Challenge 2025 - Operação Patos Primordiais 🦆
+# 🦆 Primordial Duck Hunter
+### *"Hunt. Analyze. Capture. The future of duck intelligence begins here."*
 
-Um sistema completo para monitoramento, análise e captura de Patos Primordiais utilizando tecnologia de drones avançada.
+Um sistema completo para **monitoramento, análise e captura de Patos Primordiais**, integrando telemetria de drones, classificação de risco e controle tático em tempo real.  
+Desenvolvido para o **Coder Challenge 2025**, o projeto combina **engenharia de dados, análise inteligente e interface interativa** para a Operação Patos Primordiais.
+
+---
+
+## 🧠 Badges
+
+[![Made with Vue 3](https://img.shields.io/badge/Vue-3-42b883?style=for-the-badge&logo=vue.js&logoColor=white)]()
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)]()
+[![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)]()
+[![Prisma ORM](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)]()
+[![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)]()
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)]()
+[![Swagger Docs](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)]()
+[![License MIT](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)]()
+
+---
+
+## 📚 Sumário
+- [🚀 Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [📋 Pré-requisitos](#-pré-requisitos)
+- [🔧 Instalação e Execução](#-instalação-e-execução)
+- [🎯 Funcionalidades do Sistema](#-funcionalidades-do-sistema)
+- [🎲 Banco de Dados](#-banco-de-dados)
+- [🧪 Testes](#-testes)
+- [📚 Documentação da API](#-documentação)
+- [🔐 Segurança](#-segurança)
+- [🌐 Escalabilidade e Arquitetura](#-escalabilidade)
+- [👨‍💻 Autor](#-autor)
+
+---
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -33,8 +64,8 @@ Um sistema completo para monitoramento, análise e captura de Patos Primordiais 
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/MarcosGardinali/Coder-Challenge-2025.git
-cd Coder-Challenge-2025
+git clone https://github.com/MarcosGardinali/primordial-duck-hunter.git
+cd primordial-duck-hunter
 ```
 
 2. Inicie os containers com Docker Compose:
@@ -134,3 +165,16 @@ A arquitetura do projeto foi desenvolvida pensando em escalabilidade:
 - Containers Docker independentes
 - Nginx como proxy reverso
 - ORM com suporte a diferentes bancos de dados
+
+---
+
+## 👨‍💻 Autor
+
+**Marcos Gardinali**  
+Desenvolvedor Front-End.
+
+- 🧠 **GitHub:** [MarcosGardinali](https://github.com/MarcosGardinali)  
+- 💬 **LinkedIn:** [linkedin.com/in/marcos-gardinali](https://linkedin.com/in/marcos-gardinali)  
+
+> “Building systems that hunt the impossible.” 🦆
+---
