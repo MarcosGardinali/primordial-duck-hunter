@@ -12,15 +12,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH and Add Host Key
+      - name: Start SSH Agent
+        run: eval "$(ssh-agent -s)"
+
+      - name: Add SSH Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: ssh-add - <<< "${SSH_PRIVATE_KEY}"
+
+      - name: Create .ssh directory
+        run: mkdir -p ~/.ssh
+
+      - name: Add host key
+        env:
           SSH_HOST: 74.249.35.118
-        run: |
-          eval "$(ssh-agent -s)"
-          ssh-add - <<< "${SSH_PRIVATE_KEY}"
-          mkdir -p ~/.ssh
-          ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         env:
