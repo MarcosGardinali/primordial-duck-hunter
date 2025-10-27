@@ -20,13 +20,13 @@ jobs:
       - name: Add host key
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H 74.249.31.172 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 74.249.35.118 >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         env:
           DEPLOY_PATH: /home/marcosgardinali/coder-challenge-2025
           SSH_USER: marcosgardinali
-          SERVER_IP: 74.249.31.172
+          SERVER_IP: 74.249.35.118
         run: |
           # Criar diretório se não existir
           ssh $SSH_USER@$SERVER_IP "mkdir -p $DEPLOY_PATH"
@@ -42,7 +42,7 @@ jobs:
       - name: Build and restart containers
         env:
           SSH_USER: marcosgardinali
-          SERVER_IP: 74.249.31.172
+          SERVER_IP: 74.249.35.118
         run: |
           ssh $SSH_USER@$SERVER_IP 'cd /home/marcosgardinali/coder-challenge-2025 && \
           docker compose down && \
