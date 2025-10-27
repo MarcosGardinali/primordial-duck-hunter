@@ -36,6 +36,17 @@ jobs:
             --exclude '.env' \
             ./ $SSH_USER@$SERVER_IP:$DEPLOY_PATH/
 
+      - name: Create .env files
+        env:
+          SSH_USER: marcosgardinali
+          SERVER_IP: 74.249.35.118
+          DEPLOY_PATH: /home/marcosgardinali/coder-challenge-2025
+          ENV_BACKEND: ${{ secrets.ENV_BACKEND }}
+          ENV_FRONTEND: ${{ secrets.ENV_FRONTEND }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP "echo '${ENV_BACKEND}' > ${DEPLOY_PATH}/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP "echo '${ENV_FRONTEND}' > ${DEPLOY_PATH}/frontend/.env"
+
       - name: Build and restart containers
         env:
           SSH_USER: marcosgardinali
