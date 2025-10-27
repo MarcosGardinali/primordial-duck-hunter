@@ -12,17 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH and Add Host Key
+      - name: Setup SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: 74.249.35.118
         run: |
-          set -x
           eval "$(ssh-agent -s)"
           ssh-add - <<< "${SSH_PRIVATE_KEY}"
-          mkdir -p ~/.ssh
-          nc -zv "${SSH_HOST}" 22
-          ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         env:
@@ -31,10 +26,10 @@ jobs:
           SERVER_IP: 74.249.35.118
         run: |
           # Criar diretório se não existir
-          ssh $SSH_USER@$SERVER_IP "mkdir -p $DEPLOY_PATH"
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP "mkdir -p $DEPLOY_PATH"
           
           # Copiar arquivos
-          rsync -avz --delete \
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             --exclude '.git' \
             --exclude '.github' \
             --exclude 'node_modules' \
@@ -46,6 +41,6 @@ jobs:
           SSH_USER: marcosgardinali
           SERVER_IP: 74.249.35.118
         run: |
-          ssh $SSH_USER@$SERVER_IP 'cd /home/marcosgardinali/coder-challenge-2025 && \
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SERVER_IP 'cd /home/marcosgardinali/coder-challenge-2025 && \
           docker compose down && \
           docker compose up --build -d'
