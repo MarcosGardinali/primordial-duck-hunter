@@ -23,7 +23,6 @@
         <template #mutations="{ stat }">
           <div class="mutation-stats">
             <div>Média: {{ formatAvgMutations() }}</div>
-            <div>Máximo: {{ duckStore.stats.mutations?.max_mutations || 0 }}</div>
           </div>
         </template>
       </StatsGrid>
